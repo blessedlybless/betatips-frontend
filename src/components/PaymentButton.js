@@ -49,20 +49,7 @@ const PaymentButton = ({ user, setUser }) => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [showPayment]);
 
-  const handlePaymentConfirmation = async (transactionId) => {
-    try {
-      const response = await axios.post(`${API_URL}/auth/confirm-payment`, {
-        transactionId,
-        amount: 10000
-      });
-      
-      setUser(response.data.user);
-      toast.success('Payment confirmation sent! We will verify and activate your VIP access.');
-      setShowPayment(false);
-    } catch (error) {
-      toast.error('Failed to confirm payment');
-    }
-  };
+ 
 
   // MODAL COMPONENT - RENDERED WITH PORTAL
   const PaymentModal = () => (
