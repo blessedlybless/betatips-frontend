@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+//import axios from 'axios';
+//import toast from 'react-hot-toast';
 
-const API_URL = "https://betatips-backend.onrender.com/api";
+//const API_URL = "https://betatips-backend.onrender.com/api";
 
 
 const PaymentButton = ({ user, setUser }) => {
