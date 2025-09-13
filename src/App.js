@@ -28,7 +28,7 @@ function App() {
     } else {
       setLoading(false);
     }
-  }, [fetchUser]);
+  }, []);
 
   const fetchUser = async () => {
     try {
