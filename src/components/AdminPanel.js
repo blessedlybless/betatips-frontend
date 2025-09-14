@@ -44,61 +44,79 @@ const AdminPanel = ({ onGameAdded }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    if (!newGame.homeTeam.trim()) {
-      toast.error('Home team is required');
-      setLoading(false);
-      return;
-    }
-    if (!newGame.awayTeam.trim()) {
-      toast.error('Away team is required');
-      setLoading(false);
-      return;
-    }
-    if (!newGame.prediction.trim()) {
-      toast.error('Prediction is required');
-      setLoading(false);
-      return;
-    }
-    if (!newGame.odds || parseFloat(newGame.odds) <= 0) {
-      toast.error('Valid odds are required');
-      setLoading(false);
-      return;
-    }
-    if (!newGame.matchTime) {
-      toast.error('Match time is required');
+  if (!newGame.homeTeam.trim()) {
+    toast.error('Home team is required');
+    setLoading(false);
+    return;
+  }
+  if (!newGame.awayTeam.trim()) {
+    toast.error('Away team is required');
+    setLoading(false);
+    return;
+  }
+  if (!newGame.prediction.trim()) {
+    toast.error('Prediction is required');
+    setLoading(false);
+    return;
+  }
+  if (!newGame.odds || parseFloat(newGame.odds) <= 0) {
+    toast.error('Valid odds are required');
+    setLoading(false);
+    return;
+  }
+  if (!newGame.matchTime) {
+    toast.error('Match time is required');
+    setLoading(false);
+    return;
+  }
+
+  const gameData = {
+    homeTeam: newGame.homeTeam.trim(),
+    awayTeam: newGame.awayTeam.trim(),
+    prediction: newGame.prediction.trim(),
+    odds: parseFloat(newGame.odds),
+    category: newGame.category,
+    matchTime: newGame.matchTime
+  };
+
+  try {
+    // 🔑 GET THE TOKEN AND ADD IT TO THE REQUEST
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      toast.error('Please log in first!');
       setLoading(false);
       return;
     }
 
-    const gameData = {
-      homeTeam: newGame.homeTeam.trim(),
-      awayTeam: newGame.awayTeam.trim(),
-      prediction: newGame.prediction.trim(),
-      odds: parseFloat(newGame.odds),
-      category: newGame.category,
-      matchTime: newGame.matchTime
-    };
+    // 🚀 UPDATED AXIOS CALL WITH TOKEN
+    await axios.post(`${API_URL}/games`, gameData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    toast.success('🎯 Game added successfully!', {
+      duration: 3000,
+      position: 'top-right',
+    });
 
-    try {
-      await axios.post(`${API_URL}/games`, gameData);
-      
-      toast.success('🎯 Game added successfully!', {
-        duration: 3000,
-        position: 'top-right',
-      });
+    setNewGame({
+      homeTeam: '',
+      awayTeam: '',
+      prediction: '',
+      odds: '',
+      category: 'All Tips',
+      matchTime: ''
+    });
 
-      setNewGame({
-        homeTeam: '',
-        awayTeam: '',
-        prediction: '',
-        odds: '',
-        category: 'All Tips',
-        matchTime: ''
-      });
+    // Add the rest of your function here (closing try block, catch block, etc.)
+
 
       fetchAllGames();
       if (onGameAdded) {
