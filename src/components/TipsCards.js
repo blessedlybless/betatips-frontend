@@ -33,16 +33,23 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
     const token = localStorage.getItem('token');
     
     if (!token) {
-      console.log('No token found - user not logged in');
+      console.log('No token found');
       setLoading(false);
       return;
     }
     
-    const formattedDate = date.toISOString().split('T')[0];
-    const response = await axios.get(`${API_URL}/games/date/${formattedDate}`, {
+    // ✅ Get ALL games (not filtered by date)
+    const response = await axios.get(`${API_URL}/games`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
+    });
+    
+    // ✅ Filter by date in frontend
+    const formattedDate = date.toISOString().split('T')[0];
+    const filteredGames = response.data.filter(game => {
+      const gameDate = new Date(game.gameTime).toISOString().split('T')[0];
+      return gameDate === formattedDate;
     });
     
     const gamesByCategory = {
@@ -52,6 +59,17 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
       'Bonus': [],
       'Vip Tips': []
     };
+    
+    // ✅ Use filteredGames instead of response.data for the rest of your function
+    filteredGames.forEach(game => {
+      // Your existing categorization code here...
+      if (gamesByCategory[game.league]) {
+        gamesByCategory[game.league].push(game);
+      }
+    });
+    
+    // Continue with your existing code...
+
     
     // ... rest of your function continues as normal
 

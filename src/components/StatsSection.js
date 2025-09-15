@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = "https://betatips-backend.onrender.com/api";
 
 const StatsSection = () => {
   const [stats, setStats] = useState({
@@ -17,7 +17,7 @@ const StatsSection = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get(`${API_URL}/games/all`);
+      const response = await axios.get(`${API_URL}/games`);
       const games = response.data;
       
       const totalTips = games.length;
