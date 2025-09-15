@@ -71,7 +71,7 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
     });
     
    
-    setGamesByCategory(gamesByCategory);
+    
     
   } catch (error) {
     console.error('Error fetching games:', error);
