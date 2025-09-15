@@ -25,14 +25,32 @@ const AdminPanel = ({ onGameAdded }) => {
     fetchAllGames();
   }, []);
 
-  const fetchAllGames = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/games/all`);
-      setGames(response.data);
-    } catch (error) {
-      console.error('Error fetching games:', error);
+const fetchAllGames = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      console.log('No token found - user not logged in');
+      return;
     }
-  };
+    
+    const response = await axios.get(`${API_URL}/games/all`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    setGames(response.data);
+    console.log('Games fetched successfully:', response.data.length);
+    
+  } catch (error) {
+    console.error('Error fetching games:', error);
+    if (error.response?.status === 401) {
+      console.log('Authentication failed - token might be expired');
+    }
+  }
+};
+
 
   const fetchUsers = async () => {
     try {
