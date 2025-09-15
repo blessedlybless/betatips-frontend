@@ -80,25 +80,6 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
   }
 };
 
-    
-    // Continue with your existing code...
-
-    
-    // ... rest of your function continues as normal
-
-
-      response.data.forEach(game => {
-        if (gamesByCategory[game.category]) {
-          gamesByCategory[game.category].push(game);
-        }
-      });
-
-      setGames(gamesByCategory);
-    } catch (error) {
-      console.error('Error fetching games:', error);
-    }
-    setLoading(false);
-  };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
