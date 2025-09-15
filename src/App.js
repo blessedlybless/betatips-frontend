@@ -1,3 +1,4 @@
+// Force rebuild Mon, Sep 15, 2025  6:36:36 PM
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
@@ -9,6 +10,9 @@ import Login from './components/Login';
 import Community from './components/Community';
 import ChangePasswordModal from './components/ChangePasswordModal';
 import axios from 'axios';
+
+// Force rebuild Mon Sep 15 2025 6:29 PM
+
 
 const API_URL = "https://betatips-backend.onrender.com/api";
 
