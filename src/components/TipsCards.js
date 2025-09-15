@@ -33,12 +33,12 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
     const token = localStorage.getItem('token');
     
     if (!token) {
-      console.log('No token found');
+      console.log('No token found - user not logged in');
       setLoading(false);
       return;
     }
     
-    // ✅ Get ALL games (not filtered by date)
+    // ✅ Fixed: Use /games endpoint (not /games/date/)
     const response = await axios.get(`${API_URL}/games`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -52,6 +52,9 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
       return gameDate === formattedDate;
     });
     
+    console.log('Games fetched for TipsCards:', filteredGames.length);
+    console.log('Date filtering for:', formattedDate);
+    
     const gamesByCategory = {
       'Value Tips': [],
       'Sure Tips': [],
@@ -60,13 +63,23 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
       'Vip Tips': []
     };
     
-    // ✅ Use filteredGames instead of response.data for the rest of your function
+    // ✅ Use filteredGames (not response.data)
     filteredGames.forEach(game => {
-      // Your existing categorization code here...
-      if (gamesByCategory[game.league]) {
+      if (gamesByCategory[game.league]) {  // Note: using game.league (not game.category)
         gamesByCategory[game.league].push(game);
       }
     });
+    
+    // Set your categories state here (whatever your state setter is)
+    setGamesByCategory(gamesByCategory); // or whatever your state setter function is
+    
+  } catch (error) {
+    console.error('Error fetching games:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
     
     // Continue with your existing code...
 
