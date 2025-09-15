@@ -15,11 +15,11 @@ const AdminPanel = ({ onGameAdded }) => {
     awayTeam: '',
     prediction: '',
     odds: '',
-    category: 'All Tips',
+    category: 'Value Tips',
     matchTime: ''
   });
 
-  const categories = ['All Tips', 'Sure Tips', 'Over/Under Tips', 'Bonus', 'VIP Tips'];
+  const categories = ['Value Tips', 'Sure Tips', 'Over/Under Tips', 'Bonus', 'VIP Tips'];
 
   useEffect(() => {
     fetchAllGames();
@@ -74,14 +74,14 @@ const AdminPanel = ({ onGameAdded }) => {
     return;
   }
 
-  const gameData = {
-    homeTeam: newGame.homeTeam.trim(),
-    awayTeam: newGame.awayTeam.trim(),
-    prediction: newGame.prediction.trim(),
-    odds: parseFloat(newGame.odds),
-    category: newGame.category,
-    matchTime: newGame.matchTime
-  };
+const gameData = {
+  homeTeam: newGame.homeTeam.trim(),
+  awayTeam: newGame.awayTeam.trim(),
+  prediction: newGame.prediction.trim(),
+  odds: parseFloat(newGame.odds),
+  league: newGame.category,          // ✅ Changed to 'league'
+  gameTime: newGame.matchTime        // ✅ Changed to 'gameTime'
+};
 
   try {
     // 🔑 GET THE TOKEN AND ADD IT TO THE REQUEST

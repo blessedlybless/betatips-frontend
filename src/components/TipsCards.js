@@ -14,7 +14,7 @@ const API_URL = "https://betatips-backend.onrender.com/api";
 const TipsCards = ({ user, refreshTrigger, setUser }) => {
   const navigate = useNavigate();
   const [games, setGames] = useState({
-    'All Tips': [],
+    'Value Tips': [],
     'Sure Tips': [],
     'Over/Under Tips': [],
     'Bonus': [],
@@ -37,7 +37,7 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
         'Sure Tips': [],
         'Over/Under Tips': [],
         'Bonus': [],
-        'VIP Tips': []
+        'Value Tips': []
       };
 
       response.data.forEach(game => {
