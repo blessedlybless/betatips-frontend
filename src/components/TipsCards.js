@@ -70,8 +70,8 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
       }
     });
     
-    // Set your categories state here (whatever your state setter is)
-    setGamesByCategory(gamesByCategory); // or whatever your state setter function is
+   
+    setGamesByCategory(gamesByCategory);
     
   } catch (error) {
     console.error('Error fetching games:', error);
