@@ -28,17 +28,33 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
   }, [refreshTrigger, selectedDate]);
 
   const fetchGames = async (date) => {
-    setLoading(true);
-    try {
-      const formattedDate = date.toISOString().split('T')[0];
-      const response = await axios.get(`${API_URL}/games/date/${formattedDate}`);
-      const gamesByCategory = {
-        'Value Tips': [],
-        'Sure Tips': [],
-        'Over/Under Tips': [],
-        'Bonus': [],
-        'Value Tips': []
-      };
+  setLoading(true);
+  try {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      console.log('No token found - user not logged in');
+      setLoading(false);
+      return;
+    }
+    
+    const formattedDate = date.toISOString().split('T')[0];
+    const response = await axios.get(`${API_URL}/games/date/${formattedDate}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const gamesByCategory = {
+      'Value Tips': [],
+      'Sure Tips': [],
+      'Over/Under Tips': [],
+      'Bonus': [],
+      'Vip Tips': []
+    };
+    
+    // ... rest of your function continues as normal
+
 
       response.data.forEach(game => {
         if (gamesByCategory[game.category]) {
