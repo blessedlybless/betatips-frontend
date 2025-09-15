@@ -34,7 +34,7 @@ const fetchAllGames = async () => {
       return;
     }
     
-    const response = await axios.get(`${API_URL}/games/all`, {
+    const response = await axios.get(`${API_URL}/games`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
