@@ -1,6 +1,6 @@
 // Force rebuild Mon, Sep 15, 2025  6:36:36 PM
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
