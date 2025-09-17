@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://betatips-backend.onrender.com/api'
+  : 'http://localhost:5000/api';
+
 
 const Community = ({ user }) => {
   const navigate = useNavigate();

@@ -3,8 +3,9 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://api.betatips.com.ng/api'
+  ? 'https://betatips-backend.onrender.com/api'
   : 'http://localhost:5000/api';
+
 
 const ChangePasswordModal = ({ isOpen, onClose }) => {
   const [currentPassword, setCurrentPassword] = useState('');

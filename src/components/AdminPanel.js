@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://betatips-backend.onrender.com/api'
+  : 'http://localhost:5000/api';
+
 
 const AdminPanel = ({ onGameAdded }) => {
   const [games, setGames] = useState([]);

@@ -9,8 +9,9 @@ import TrustBadges from './TrustBadges';
 import PaymentButton from './PaymentButton';
 
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://api.betatips.com.ng/api'
+  ? 'https://betatips-backend.onrender.com/api'
   : 'http://localhost:5000/api';
+
 
 const TipsCards = ({ user, refreshTrigger, setUser }) => {
   const navigate = useNavigate();
