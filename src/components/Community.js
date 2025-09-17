@@ -21,13 +21,19 @@ const Community = ({ user }) => {
   }, []);
 
   const fetchPosts = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/community/posts`);
-      setPosts(response.data);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
-  };
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/posts`, {  // ✅ Correct endpoint
+      headers: {
+        'Authorization': `Bearer ${token}`  // ✅ Add auth header
+      }
+    });
+    setPosts(response.data);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+  }
+};
+
 
   const handleSubmitPost = async (e) => {
     e.preventDefault();
@@ -57,37 +63,51 @@ const Community = ({ user }) => {
   };
 
   const handleSubmitReply = async (postId) => {
-    const replyText = replyTexts[postId];
-    if (!replyText?.trim()) {
-      toast.error('Please write a reply!');
-      return;
-    }
+  const replyText = replyTexts[postId];
+  if (!replyText?.trim()) {
+    toast.error('Please write a reply!');
+    return;
+  }
 
-    try {
-      await axios.post(`${API_URL}/community/posts/${postId}/reply`, {
-        content: replyText.trim()
-      });
-
-      setReplyTexts({ ...replyTexts, [postId]: '' });
-      setShowReplyFor(null);
-      fetchPosts();
-      toast.success('Reply added!');
-    } catch (error) {
-      toast.error('Error adding reply');
-    }
-  };
-
-  const deletePost = async (postId) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      try {
-        await axios.delete(`${API_URL}/community/posts/${postId}`);
-        fetchPosts();
-        toast.success('Post deleted successfully!');
-      } catch (error) {
-        toast.error('Error deleting post');
+  try {
+    const token = localStorage.getItem('token');
+    await axios.post(`${API_URL}/posts/${postId}/comments`, {  // ✅ Changed endpoint
+      content: replyText.trim()
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`  // ✅ Add auth
       }
+    });
+
+    setReplyTexts({ ...replyTexts, [postId]: '' });
+    setShowReplyFor(null);
+    fetchPosts();
+    toast.success('Reply added!');
+  } catch (error) {
+    console.error('Reply error:', error);
+    toast.error('Error adding reply');
+  }
+};
+
+
+const deletePost = async (postId) => {
+  if (window.confirm('Are you sure you want to delete this post?')) {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`${API_URL}/posts/${postId}`, {  // ✅ Fixed endpoint
+        headers: {
+          'Authorization': `Bearer ${token}`  // ✅ Add auth
+        }
+      });
+      fetchPosts();
+      toast.success('Post deleted successfully!');
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Error deleting post');
     }
-  };
+  }
+};
+
 
   return (
     <div className="community-page">

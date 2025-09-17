@@ -30,17 +30,30 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
   }, [refreshTrigger, selectedDate]);
 
   const fetchGames = async (date) => {
-    setLoading(true);
-    try {
-      const formattedDate = date.toISOString().split('T')[0];
-      const response = await axios.get(`${API_URL}/games/date/${formattedDate}`);
-      const gamesByCategory = {
-        'All Tips': [],
-        'Sure Tips': [],
-        'Over/Under Tips': [],
-        'Bonus': [],
-        'VIP Tips': []
-      };
+  setLoading(true);
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/games`, {  // ✅ Use correct endpoint
+      headers: {
+        'Authorization': `Bearer ${token}`  // ✅ Add auth header
+      }
+    });
+    
+    // Filter games by date on the frontend
+    const formattedDate = date.toISOString().split('T')[0];
+    const filteredGames = response.data.filter(game => {
+      const gameDate = new Date(game.createdAt).toISOString().split('T')[0];
+      return gameDate === formattedDate;
+    });
+    
+    const gamesByCategory = {
+      'All Tips': filteredGames,
+      'Sure Tips': filteredGames.filter(game => game.category === 'Sure Tips'),
+      'Over/Under Tips': filteredGames.filter(game => game.category === 'Over/Under Tips'),
+      'Bonus': filteredGames.filter(game => game.category === 'Bonus'),
+      'VIP Tips': filteredGames.filter(game => game.isVip === true)
+    };
+
 
       response.data.forEach(game => {
         if (gamesByCategory[game.category]) {

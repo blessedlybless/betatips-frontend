@@ -28,13 +28,18 @@ const AdminPanel = ({ onGameAdded }) => {
   }, []);
 
   const fetchAllGames = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/games/all`);
-      setGames(response.data);
-    } catch (error) {
-      console.error('Error fetching games:', error);
-    }
-  };
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/games`, {  // ✅ Correct endpoint
+      headers: {
+        'Authorization': `Bearer ${token}`  // ✅ Add auth header
+      }
+    });
+    setGames(response.data);
+  } catch (error) {
+    console.error('Error fetching games:', error);
+  }
+};
 
   const fetchUsers = async () => {
     try {
@@ -119,33 +124,47 @@ const AdminPanel = ({ onGameAdded }) => {
     }
   };
 
-  const deleteGame = async (id) => {
-    if (window.confirm('Are you sure you want to delete this game?')) {
-      try {
-        await axios.delete(`${API_URL}/games/${id}`);
-        fetchAllGames();
-        if (onGameAdded) {
-          onGameAdded();
-        }
-        toast.success('🗑️ Game deleted successfully!');
-      } catch (error) {
-        toast.error('❌ Error deleting game');
-      }
-    }
-  };
-
-  const updateResult = async (id, result) => {
+ const deleteGame = async (id) => {
+  if (window.confirm('Are you sure you want to delete this game?')) {
     try {
-      await axios.patch(`${API_URL}/games/${id}/result`, { result });
+      const token = localStorage.getItem('token');
+      await axios.delete(`${API_URL}/games/${id}`, {  // ✅ Add auth headers
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       fetchAllGames();
       if (onGameAdded) {
         onGameAdded();
       }
-      toast.success(`✅ Result marked as ${result.toUpperCase()}!`);
+      toast.success('🗑️ Game deleted successfully!');
     } catch (error) {
-      toast.error('❌ Error updating result');
+      console.error('Delete game error:', error);
+      toast.error('❌ Error deleting game');
     }
-  };
+  }
+};
+
+
+const updateResult = async (id, result) => {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.patch(`${API_URL}/games/${id}/result`, { result }, {  // ✅ Add auth headers
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    fetchAllGames();
+    if (onGameAdded) {
+      onGameAdded();
+    }
+    toast.success(`✅ Result marked as ${result.toUpperCase()}!`);
+  } catch (error) {
+    console.error('Update result error:', error);
+    toast.error('❌ Error updating result');
+  }
+};
+
 
   const toggleUserVip = async (userId, currentStatus, username) => {
     try {
