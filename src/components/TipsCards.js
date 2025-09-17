@@ -69,7 +69,7 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
         gamesByCategory[game.league].push(game);
       }
     });
-    
+     // eslint-disable-next-line no-undef
    
     
     
