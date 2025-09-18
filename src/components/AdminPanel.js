@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://betatips-backend.onrender.com/api'
-  : 'http://localhost:5000/api';
-
+const API_URL = "https://betatips-backend.onrender.com/api";
 
 const AdminPanel = ({ onGameAdded }) => {
   const [games, setGames] = useState([]);
@@ -17,8 +14,8 @@ const AdminPanel = ({ onGameAdded }) => {
     awayTeam: '',
     prediction: '',
     odds: '',
-    category: 'All Tips',
-    matchTime: ''
+    league: 'All Tips',
+    gameTime: ''
   });
 
   const categories = ['All Tips', 'Sure Tips', 'Over/Under Tips', 'Bonus', 'VIP Tips'];
@@ -41,15 +38,57 @@ const AdminPanel = ({ onGameAdded }) => {
   }
 };
 
+
+
+
+
+  
+
+
+
   const fetchUsers = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/admin/users`);
+      const token = localStorage.getItem('token'); // If you use JWT
+      const response = await axios.get(`${API_URL}/admin/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      console.log('Fetched users:', response.data); // Debug: see returned data
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
-      toast.error('Error loading users');
+      // Optionally use toast or another alert system
+      // toast.error('Error loading users');
     }
+    setLoading(false);
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  return (
+    <div>
+      <h2>Registered Users</h2>
+      {loading ? (
+        <div>Loading...</div>
+      ) : users.length > 0 ? (
+        <ul>
+          {users.map(user => (
+            <li key={user._id || user.id}>
+              {user.username} ({user.email})
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div>No users found.</div>
+      )}
+    </div>
+  );
+}
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

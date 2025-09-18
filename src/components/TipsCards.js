@@ -8,9 +8,8 @@ import Testimonials from './Testimonials';
 import TrustBadges from './TrustBadges';
 import PaymentButton from './PaymentButton';
 
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://betatips-backend.onrender.com/api'
-  : 'http://localhost:5000/api';
+const API_URL = "https://betatips-backend.onrender.com/api";
+
 
 
 const TipsCards = ({ user, refreshTrigger, setUser }) => {
