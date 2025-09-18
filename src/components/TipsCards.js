@@ -16,7 +16,7 @@ const API_URL = process.env.NODE_ENV === 'production'
 const TipsCards = ({ user, refreshTrigger, setUser }) => {
   const navigate = useNavigate();
   const [games, setGames] = useState({
-    'All Tips': [],
+    'Value Tips': [],
     'Sure Tips': [],
     'Over/Under Tips': [],
     'Bonus': [],
@@ -47,7 +47,7 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
     });
     
     const gamesByCategory = {
-      'All Tips': filteredGames,
+      'Value Tips': filteredGames,
       'Sure Tips': filteredGames.filter(game => game.category === 'Sure Tips'),
       'Over/Under Tips': filteredGames.filter(game => game.category === 'Over/Under Tips'),
       'Bonus': filteredGames.filter(game => game.category === 'Bonus'),

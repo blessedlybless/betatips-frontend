@@ -86,8 +86,8 @@ const AdminPanel = ({ onGameAdded }) => {
       awayTeam: newGame.awayTeam.trim(),
       prediction: newGame.prediction.trim(),
       odds: parseFloat(newGame.odds),
-      category: newGame.category,
-      matchTime: newGame.matchTime
+      league: newGame.category,
+      gameTime: newGame.matchTime
     };
 
     try {
@@ -103,8 +103,8 @@ const AdminPanel = ({ onGameAdded }) => {
         awayTeam: '',
         prediction: '',
         odds: '',
-        category: 'All Tips',
-        matchTime: ''
+        league: 'All Tips',
+        gameTime: ''
       });
 
       fetchAllGames();
