@@ -119,7 +119,7 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
               <div key={game._id} className="game-item">
                 <div className="match-info">
                   <span className="teams">{game.homeTeam} vs {game.awayTeam}</span>
-                  <span className="time">{new Date(game.matchTime).toLocaleTimeString()}</span>
+                  <span className="time">{game.gameTime || 'TBD'}</span>
                 </div>
                 <div className="prediction">
                   <span className="tip">{game.prediction}</span>
