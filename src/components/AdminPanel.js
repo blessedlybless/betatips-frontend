@@ -65,7 +65,66 @@ const AdminPanel = ({ onGameAdded }) => {
     fetchUsers();
   }, []);
 
-  
+  // In your AdminPanel.js users section, add these functions:
+const blockUser = async (userId, shouldBlock) => {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.patch(`${API_URL}/admin/users/${userId}/block`, 
+      { blocked: shouldBlock },
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+    toast.success(`User ${shouldBlock ? 'blocked' : 'unblocked'} successfully!`);
+    fetchUsers(); // Refresh the list
+  } catch (error) {
+    console.error('Block user error:', error);
+    toast.error('Error updating user status');
+  }
+};
+
+const toggleVIP = async (userId, shouldHaveVIP) => {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.patch(`${API_URL}/admin/users/${userId}/vip`, 
+      { hasPaid: shouldHaveVIP },
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+    toast.success(`VIP access ${shouldHaveVIP ? 'granted' : 'removed'}!`);
+    fetchUsers(); // Refresh the list
+  } catch (error) {
+    console.error('VIP update error:', error);
+    toast.error('Error updating VIP status');
+  }
+};
+
+// Update your user display to include action buttons:
+<div className="users-list">
+  {users.map(user => (
+    <div key={user._id} className="user-item">
+      <div className="user-info">
+        <strong>{user.username}</strong>
+        <p>{user.email}</p>
+        <p>Joined: {new Date(user.createdAt).toLocaleDateString()}</p>
+        <p>VIP: {user.hasPaid ? '✅ Yes' : '❌ No'}</p>
+        <p>Status: {user.isBlocked ? '🚫 Blocked' : '✅ Active'}</p>
+      </div>
+      <div className="user-actions">
+        <button 
+          onClick={() => toggleVIP(user._id, !user.hasPaid)}
+          className={user.hasPaid ? 'btn-remove-vip' : 'btn-grant-vip'}
+        >
+          {user.hasPaid ? 'Remove VIP' : 'Grant VIP'}
+        </button>
+        <button 
+          onClick={() => blockUser(user._id, !user.isBlocked)}
+          className={user.isBlocked ? 'btn-unblock' : 'btn-block'}
+        >
+          {user.isBlocked ? 'Unblock' : 'Block'}
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
 
 
 
