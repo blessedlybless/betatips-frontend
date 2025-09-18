@@ -19,21 +19,27 @@ const StatsSection = () => {
   }, []);
 
   const fetchStats = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/games/all`);
-      const games = response.data;
-      
-      const totalTips = games.length;
-      const completedGames = games.filter(game => game.result);
-      const totalWins = completedGames.filter(game => game.result === 'win').length;
-      const totalLoss = completedGames.filter(game => game.result === 'loss').length;
-      const winRate = completedGames.length > 0 ? ((totalWins / completedGames.length) * 100).toFixed(1) : 0;
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/games`, {  // ✅ Correct endpoint
+      headers: {
+        'Authorization': `Bearer ${token}`  // ✅ Add auth token
+      }
+    });
+    const games = response.data;
+    
+    const totalTips = games.length;
+    const completedGames = games.filter(game => game.result);
+    const totalWins = completedGames.filter(game => game.result === 'win').length;
+    const totalLoss = completedGames.filter(game => game.result === 'loss').length;
+    const winRate = completedGames.length > 0 ? ((totalWins / completedGames.length) * 100).toFixed(1) : 0;
 
-      setStats({ totalTips, winRate, totalWins, totalLoss });
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-    }
-  };
+    setStats({ totalTips, winRate, totalWins, totalLoss });
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+  }
+};
+
 
   return (
     <div className="stats-section">
