@@ -43,7 +43,10 @@ const AdminPanel = ({ onGameAdded }) => {
 
 
   
-
+  function AdminPanel() {
+  // Add these state variables at the top
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
 
   const fetchUsers = async () => {
