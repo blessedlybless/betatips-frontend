@@ -42,13 +42,6 @@ const AdminPanel = ({ onGameAdded }) => {
 
 
 
-  
-  function AdminPanel() {
-  // Add these state variables at the top
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -72,25 +65,8 @@ const AdminPanel = ({ onGameAdded }) => {
     fetchUsers();
   }, []);
 
-  return (
-    <div>
-      <h2>Registered Users</h2>
-      {loading ? (
-        <div>Loading...</div>
-      ) : users.length > 0 ? (
-        <ul>
-          {users.map(user => (
-            <li key={user._id || user.id}>
-              {user.username} ({user.email})
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div>No users found.</div>
-      )}
-    </div>
-  );
-}
+  
+
 
 
   const handleSubmit = async (e) => {
