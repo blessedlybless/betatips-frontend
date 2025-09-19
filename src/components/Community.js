@@ -33,33 +33,37 @@ const Community = ({ user }) => {
   }
 };
 
+ const handleSubmitPost = async (e) => {
+  e.preventDefault();
+  
+  if (!newPost.trim()) {
+    toast.error('Please write something before posting!');
+    return;
+  }
 
-  const handleSubmitPost = async (e) => {
-    e.preventDefault();
+  setLoading(true);
+  
+  try {
+    const token = localStorage.getItem('token'); // ADD THIS
+    await axios.post(`${API_URL}/posts`, { // CHANGE URL HERE
+      content: newPost.trim()
+    }, {
+      headers: { 'Authorization': `Bearer ${token}` } // ADD THIS
+    });
+
+    setNewPost('');
+    fetchPosts();
+    toast.success('Post shared with community!');
     
-    if (!newPost.trim()) {
-      toast.error('Please write something before posting!');
-      return;
-    }
+  } catch (error) {
+    console.error('Error posting:', error);
+    toast.error('Error posting to community');
+  } finally {
+    setLoading(false);
+  }
+};
 
-    setLoading(true);
-    
-    try {
-      await axios.post(`${API_URL}/community/posts`, {
-        content: newPost.trim()
-      });
-
-      setNewPost('');
-      fetchPosts();
-      toast.success('Post shared with community!');
-      
-    } catch (error) {
-      console.error('Error posting:', error);
-      toast.error('Error posting to community');
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   const handleSubmitReply = async (postId) => {
   const replyText = replyTexts[postId];

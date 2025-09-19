@@ -32,11 +32,16 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
   setLoading(true);
   try {
     const token = localStorage.getItem('token');
+    console.log('🔄 Fetching games with token:', !!token); // ADD THIS
     const response = await axios.get(`${API_URL}/games`, {  // ✅ Use correct endpoint
       headers: {
         'Authorization': `Bearer ${token}`  // ✅ Add auth header
       }
     });
+
+    console.log('✅ Games fetched:', response.data.length, 'games'); // ADD THIS
+    console.log('📋 First game example:', response.data[0]); // ADD THIS
+    console.log('🎯 All games data:', response.data); // ADD THIS
     
     // Filter games by date on the frontend
     const formattedDate = date.toISOString().split('T')[0];
@@ -112,10 +117,10 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
               Get exclusive high-value predictions with better odds!
             </p>
           </div>
-        ) : gamesList.length > 0 ? (
+         ) : gamesList.length > 0 ? (
           <div className="games-list">
             {gamesList.map(game => (
-             // console.log('Rendering game:', game.homeTeam, 'Result:', game.result); // Add this line
+             console.log('Rendering game:', game.homeTeam, 'Result:', game.result), // Add this line
               <div key={game._id} className="game-item">
                 <div className="match-info">
                   <span className="teams">{game.homeTeam} vs {game.awayTeam}</span>
@@ -125,6 +130,11 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
                   <span className="tip">{game.prediction}</span>
                   <span className="odds">@{game.odds}</span>
                 </div>
+
+                {/* Temporary debug display */}
+                <div style={{color: 'red', fontSize: '10px'}}>
+                 DEBUG: result = "{game.result}"
+               </div>
                 {game.result && (
                   <div className={`result ${game.result}`}>
                      
@@ -142,6 +152,7 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
       </div>
     </div>
   );
+
 
   if (loading) return <div className="loading">Loading games...</div>;
 
