@@ -115,7 +115,7 @@ const TipsCards = ({ user, refreshTrigger, setUser }) => {
         ) : gamesList.length > 0 ? (
           <div className="games-list">
             {gamesList.map(game => (
-              console.log('Rendering game:', game.homeTeam, 'Result:', game.result); // Add this line
+             // console.log('Rendering game:', game.homeTeam, 'Result:', game.result); // Add this line
               <div key={game._id} className="game-item">
                 <div className="match-info">
                   <span className="teams">{game.homeTeam} vs {game.awayTeam}</span>
