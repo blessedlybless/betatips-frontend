@@ -249,7 +249,7 @@ const generateTempPassword = async (userId, username, email) => {
 const updateResult = async (id, result) => {
   try {
     const token = localStorage.getItem('token');
-    console.log('🎯 Updating game', gameId, 'with result:', result), // Add this debug
+    //console.log('🎯 Updating game', gameId, 'with result:', result), // Add this debug
     await axios.patch(`${API_URL}/games/${id}/result`, { result }, {  // ✅ Add auth headers
       headers: {
         'Authorization': `Bearer ${token}`
@@ -259,7 +259,7 @@ const updateResult = async (id, result) => {
     if (onGameAdded) {
       onGameAdded();
     }
-    console.log('✅ Game updated successfully:', response.data), // Add this debug
+    //console.log('✅ Game updated successfully:', response.data), // Add this debug
     toast.success(`✅ Result marked as ${result.toUpperCase()}!`);
   } catch (error) {
     console.error('Update result error:', error);
