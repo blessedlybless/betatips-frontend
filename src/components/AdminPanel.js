@@ -96,6 +96,29 @@ const toggleVIP = async (userId, shouldHaveVIP) => {
   }
 };
 
+// Add this function to AdminPanel.js
+const generateTempPassword = async (userId, username, email) => {
+  if (window.confirm(`Generate temporary password for ${username} (${email})?`)) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.patch(`${API_URL}/admin/users/${userId}/generate-temp-password`, 
+        {},
+        { headers: { 'Authorization': `Bearer ${token}` } }
+      );
+      
+      // Show the temporary password to admin
+      alert(`Temporary password for ${username}: ${response.data.tempPassword}\n\nGive this to the user. They must change it after login.`);
+      toast.success('Temporary password generated!');
+      fetchUsers(); // Refresh user list
+    } catch (error) {
+      console.error('Generate temp password error:', error);
+      toast.error('Error generating temporary password');
+    }
+  }
+};
+
+
+
 // Update your user display to include action buttons:
 <div className="users-list">
   {users.map(user => (
@@ -492,6 +515,9 @@ const updateResult = async (id, result) => {
                     >
                       {user.isActive ? '🚫 Block User' : '✅ Unblock User'}
                     </button>
+                    <button onClick={() => generateTempPassword(user._id, user.username, user.email)}>
+                     Reset Password
+                   </button>
                   </div>
                 </div>
               )) : (
